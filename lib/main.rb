@@ -7,13 +7,19 @@ class ConnectFour
   end
   
   def play_game
-    while !check_winner()
+    winner = false
+    while !winner
+      @turn += 1
       display_board()
       display_turn_message()
-      get_user_move()
+      move = get_user_move()
+      make_move(move)
+      winner = check_winner()
+      puts "**********"
     end
 
     display_winner()
+    display_board()
   end
 
   def check_winner
@@ -30,6 +36,7 @@ class ConnectFour
         end
       end
     end
+    return false
   end
 
   def check_column
@@ -45,6 +52,7 @@ class ConnectFour
         end
       end
     end
+    return false
   end
 
   def check_diagonal
@@ -57,6 +65,7 @@ class ConnectFour
         end
       end
     end
+    return false
   end
 
   def display_board
@@ -64,6 +73,36 @@ class ConnectFour
       puts row.join(' ')
     end
   end
+
+  def display_turn_message
+    current_player = current_player()
+    puts "Make your move player #{current_player}"
+  end
+
+  def current_player
+    (@turn % 2 == 0) ? @p1 : @p2
+  end
+
+  def get_user_move
+    input = ""
+    while !(input in (0..6))
+      input = gets.chomp.to_i
+    end
+    return input
+  end
+
+  def make_move(move)
+    @game_board.each do |row|
+      if row[move] == "\u25cb"
+        row[move] = current_player()
+        break
+      end
+    end
+  end
+
+  def display_winner
+    puts "#{current_player()} won"
+  end
 end
 
-ConnectFour.new.display_board
+ConnectFour.new.play_game
