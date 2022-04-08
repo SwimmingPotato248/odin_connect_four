@@ -58,6 +58,12 @@ class ConnectFour
       end
     end
   end
+
+  def display_board
+    @game_board.reverse.each do |row|
+      puts row.join(' ')
+    end
+  end
 end
 
-ConnectFour.new.play_game
+ConnectFour.new.display_board
